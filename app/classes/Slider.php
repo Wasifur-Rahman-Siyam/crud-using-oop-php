@@ -5,15 +5,15 @@ include "Database.php";
 use App\classes\Database;
 
 class Slider {
-    public $title,$desc,$image,$imageName,$db_connection, $allStQuery,$allSelected;
+    public $db_connection;
     public function __construct(){
         $this->db = new Database('photo_gallery');
     }
 
     public function allItems() {
-        $this->allSelectQuery = "SELECT * FROM slider_items WHERE status = 1";
-        $this->allSelected = mysqli_query($this->db->dbConnect(),$this->allSelectQuery);
-        return $this->allSelected;
+        $allSelectQuery = "SELECT * FROM slider_items WHERE status = 1";
+        $allSelected = mysqli_query($this->db->dbConnect(),$allSelectQuery);
+        return $allSelected;
     }
 
     public function selectItem($id) {
@@ -23,16 +23,16 @@ class Slider {
     }
     
     public function addSliderItem($request,$files) {
-        $this->title        =   $request['title'];
-        $this->desc         =   $request['description'];
-        $this->image        =   $files['image'];
-        $this->imageName    =   "assets/images/slider/".time().$this->image['name'];
-        $insertQuery        =   "INSERT INTO slider_items(title, description, image) VALUES ('$this->title','$this->desc','$this->imageName')";
+        $title        =   $request['title'];
+        $desc         =   $request['description'];
+        $image        =   $files['image'];
+        $imageName    =   "assets/images/slider/".time().$image['name'];
+        $insertQuery        =   "INSERT INTO slider_items(title, description, image) VALUES ('$title','$desc','$imageName')";
 
         $query_inserted = mysqli_query($this->db->dbConnect(),$insertQuery);
 
         if($query_inserted){
-            move_uploaded_file($this->image['tmp_name'],$this->imageName);
+            move_uploaded_file($image['tmp_name'],$imageName);
             echo "<p class = 'py-4 text-center bg-success text-white mb-0'>Data inserted successfully</p>";
         }
         else{
@@ -41,8 +41,27 @@ class Slider {
     }
 
 
-    public function updateSliderItem() {
+    public function updateSliderItem($id,$request,$files) {
+        $title        =   $request['title'];
+        $desc         =   $request['description'];
+        $image        =   $files['image'];
+        $imageName    =   "assets/images/slider/".time().$image['name'];
 
+        if (empty($image['name'])) {
+            $updateQuery  =   "UPDATE slider_items SET title = '$title', description = '$desc' WHERE slider_items.id = $id";
+        }  else {
+            $updateQuery  =   "UPDATE slider_items SET title = '$title', description = '$desc', image = '$imageName' WHERE slider_items.id = $id";
+        }
+
+        $query_updated = mysqli_query($this->db->dbConnect(),$updateQuery);
+        
+        if($query_updated){
+            move_uploaded_file($image['tmp_name'],$imageName);
+        }
+        
+
+        header('Location:?page=slider-admin'); 
+        
     }
     
     public function deleteSliderItem($id) {

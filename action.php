@@ -23,6 +23,15 @@ if (isset($_GET['page'])) {
     if ('show-image' == $_GET['page']) {
         include "pages/admin/show-image.php";
     }
+    if ('edit-slider-item' == $_GET['page']) {
+        $id = $_GET['id'];
+        $item =  mysqli_fetch_assoc($slider->selectItem($id));
+        if (isset($_POST['update_slider_submit'])){
+            $slider->updateSliderItem($id,$_POST,$_FILES);
+        }
+        include "pages/admin/edit-slider.php";
+    }
+    
     if ('delete-slider-item' == $_GET['page']) {
         $id = $_GET['id'];
         $isDeleted = $slider->deleteSliderItem($id);
@@ -31,15 +40,6 @@ if (isset($_GET['page'])) {
             echo '<script>alert("Item Deleted")</script>';
         }  
     }
-    if ('edit-slider-item' == $_GET['page']) {
-        $id = $_GET['id'];
-        $item =  mysqli_fetch_assoc($slider->selectItem($id));
-        echo "<pre>";
-        print_r($item);
-        echo "</pre>";
-        include "pages/admin/edit-slider.php";
-    }
-    
 }
 
 

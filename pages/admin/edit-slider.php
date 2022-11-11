@@ -16,7 +16,7 @@
                 <input class="form-control" type="file" id="image" name="image">
                 <img src="<?=$item['image']; ?>" alt="" style="width: 500px;" class="mt-4">
             </div>
-            <button type="submit" class="btn btn-primary" name="add_slider_submit">Submit</button>
+            <button type="submit" class="btn btn-primary" name="update_slider_submit">Submit</button>
         </form>
         </div>
     </div>
