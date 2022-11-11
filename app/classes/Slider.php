@@ -50,6 +50,8 @@ class Slider {
         if (empty($image['name'])) {
             $updateQuery  =   "UPDATE slider_items SET title = '$title', description = '$desc' WHERE slider_items.id = $id";
         }  else {
+            $item =  mysqli_fetch_assoc($this->selectItem($id));
+            $resetImage = $item['image'];
             $updateQuery  =   "UPDATE slider_items SET title = '$title', description = '$desc', image = '$imageName' WHERE slider_items.id = $id";
         }
 
@@ -57,6 +59,7 @@ class Slider {
         
         if($query_updated){
             move_uploaded_file($image['tmp_name'],$imageName);
+            unlink($resetImage);
         }
         
 
