@@ -4,7 +4,6 @@ use App\classes\Slider;
 
 include "pages/includes/header.php";
 
-
 if (isset($_GET['page'])) {
     $slider = new Slider();
     if ('home'==$_GET['page']) {
@@ -42,7 +41,5 @@ if (isset($_GET['page'])) {
     }
 }
 
-
 include "pages/includes/footer.php";
-
 ?>

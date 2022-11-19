@@ -8,8 +8,7 @@
                 </div>
             <div class="mb-3">
                 <label for="description" class="form-label">Slider description:</label>
-                <textarea name="description" class="form-control" id="description" cols="30" rows="5">
-                </textarea>
+                <textarea name="description" class="form-control" id="description" cols="30" rows="5"></textarea>
             </div>
             <div class="mb-3">
                 <label for="image" class="form-label">Slider image</label>
