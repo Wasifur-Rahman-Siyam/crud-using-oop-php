@@ -44,37 +44,47 @@ class Slider {
         
                 if($query_inserted){
                     move_uploaded_file($image['tmp_name'],$imageName);
-                    echo "<p class = 'py-4 text-center bg-success text-white mb-0'>Data inserted successfully</p>";
+                    echo "<script>alert('Data inserted successfully');</script>";
                 }
                 else{
-                    echo "<p class = 'py-4 text-center bg-success text-white mb-0'>Data not inserted</p>";
+                    echo "<script>alert('Data insertion Failed');</script>";
                 }
             }
         }
 
     }
 
-    public function updateSliderItem($id,$request,$files) {
-        $title        =   $request['title'];
-        $desc         =   $request['description'];
-        $image        =   $files['image'];
-        $imageName    =   "assets/images/slider/".time().$image['name'];
-
-        if (empty($image['name'])) {
-            $updateQuery  =   "UPDATE slider_items SET title = '$title', description = '$desc' WHERE slider_items.id = $id";
-        }  else {
-            $item =  mysqli_fetch_assoc($this->selectItem($id));
-            $resetImage = $item['image'];
-            $updateQuery  =   "UPDATE slider_items SET title = '$title', description = '$desc', image = '$imageName' WHERE slider_items.id = $id";
-        }
-
-        $query_updated = mysqli_query($this->db->dbConnect(),$updateQuery);
+    public function updateSliderItem($id,$request,$files,$item) {
+        if(isset($request['title']) && isset($request['description']) && isset($files)){
+            if(empty($request['title'])){
+                echo "<script>alert('Title cannot empty');</script>";
+            }
+            else if(empty($request['description'])){
+                echo "<script>alert('Description cannot empty');</script>";
+            }
+            else{
+                $title        =   $request['title'];
+                $desc         =   $request['description'];
+                $image        =   $files['image'];
+                $imageName    =   "assets/images/slider/".time().$image['name'];
         
-        if($query_updated){
-            move_uploaded_file($image['tmp_name'],$imageName);
-            unlink($resetImage);
+                if (empty($image['name'])) {
+                    $updateQuery  =   "UPDATE slider_items SET title = '$title', description = '$desc' WHERE slider_items.id = $id";
+                }  else {
+                    $resetImage = $item['image'];
+                    $updateQuery  =   "UPDATE slider_items SET title = '$title', description = '$desc', image = '$imageName' WHERE slider_items.id = $id";
+                }
+        
+                $query_updated = mysqli_query($this->db->dbConnect(),$updateQuery);
+                
+                if($query_updated){
+                    move_uploaded_file($image['tmp_name'],$imageName);
+                    unlink($resetImage);
+                    echo "<script>alert('Item Updated');</script>";
+                    echo "<script>window.location.href = '?page=slider-admin';</script>";
+                }
+            }
         }
-        header('Location:?page=slider-admin');  
     }
     
     public function deleteSliderItem($id) {

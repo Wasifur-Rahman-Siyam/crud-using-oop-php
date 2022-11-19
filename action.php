@@ -26,15 +26,14 @@ if (isset($_GET['page'])) {
         $id = $_GET['id'];
         $item =  mysqli_fetch_assoc($slider->selectItem($id));
         if (isset($_POST['update_slider_submit'])){
-            $slider->updateSliderItem($id,$_POST,$_FILES);
+            $slider->updateSliderItem($id,$_POST,$_FILES,$item);
         }
         include "pages/admin/edit-slider.php";
     }
     
     if ('delete-slider-item' == $_GET['page']) {
         $id = $_GET['id'];
-        $isDeleted = $slider->deleteSliderItem($id);
-        // header('Location:?page=slider-admin');    
+        $slider->deleteSliderItem($id);    
     }
 }
 
