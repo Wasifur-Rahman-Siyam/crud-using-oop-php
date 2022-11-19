@@ -34,10 +34,7 @@ if (isset($_GET['page'])) {
     if ('delete-slider-item' == $_GET['page']) {
         $id = $_GET['id'];
         $isDeleted = $slider->deleteSliderItem($id);
-        header('Location:?page=slider-admin');   
-        if($isDeleted) {
-            echo '<script>alert("Item Deleted")</script>';
-        }  
+        // header('Location:?page=slider-admin');    
     }
 }
 

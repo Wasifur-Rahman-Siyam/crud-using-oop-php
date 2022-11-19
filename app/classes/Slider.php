@@ -78,9 +78,14 @@ class Slider {
     }
     
     public function deleteSliderItem($id) {
-        
         $deleteQuery = "DELETE FROM slider_items WHERE id = $id";
+        $item =  mysqli_fetch_assoc($this->selectItem($id));
+        $deleteImage = $item['image'];
         $deleted = mysqli_query($this->db->dbConnect(),$deleteQuery);
-            return $deleted;
+        if($deleted){
+            unlink($deleteImage);
+            echo "<script>alert('Item deleted');</script>";
+            echo "<script>window.location.href = '?page=slider-admin';</script>";
+        }
     }
 }
