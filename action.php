@@ -11,6 +11,7 @@ if (isset($_GET['page'])) {
     }
     
     if ('slider-admin' == $_GET['page']) {
+        $allItems = $slider->allItems();
         include "pages/admin/slider-admin.php";
     }
     if ('add-slider' == $_GET['page']) {
@@ -24,7 +25,7 @@ if (isset($_GET['page'])) {
     }
     if ('edit-slider-item' == $_GET['page']) {
         $id = $_GET['id'];
-        $item =  mysqli_fetch_assoc($slider->selectItem($id));
+        $item =  mysqli_fetch_assoc($slider->selectItemById($id));
         if (isset($_POST['update_slider_submit'])){
             $slider->updateSliderItem($id,$_POST,$_FILES,$item);
         }

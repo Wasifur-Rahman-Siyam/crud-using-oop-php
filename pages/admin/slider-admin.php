@@ -16,9 +16,6 @@
                 </thead>
                 <tbody>
                 <?php 
-
-                $allItems = $slider->allItems();
-
                 if(mysqli_num_rows($allItems)>0){
                     while($items = mysqli_fetch_assoc($allItems)){
                         ?> 

@@ -8,17 +8,18 @@ class Slider {
     public $db_connection;
     public function __construct(){
         $this->db = new Database('photo_gallery');
+        $this->db_connection = $this->db->dbConnect();
     }
     
     public function allItems() {
         $allSelectQuery = "SELECT * FROM slider_items WHERE status = 1";
-        $allSelected = mysqli_query($this->db->dbConnect(),$allSelectQuery);
+        $allSelected = mysqli_query($this->db_connection,$allSelectQuery);
         return $allSelected;
     }
 
-    public function selectItem($id) {
+    public function selectItemById($id) {
         $selectQuery = "SELECT * FROM slider_items WHERE id = $id";
-        $selectedItem = mysqli_query($this->db->dbConnect(),$selectQuery);
+        $selectedItem = mysqli_query($this->db_connection,$selectQuery);
         return $selectedItem;
     }
     
@@ -40,7 +41,7 @@ class Slider {
                 $imageName    =   "assets/images/slider/".time().$image['name'];
                 $insertQuery        =   "INSERT INTO slider_items(title, description, image) VALUES ('$title','$desc','$imageName')";
         
-                $query_inserted = mysqli_query($this->db->dbConnect(),$insertQuery);
+                $query_inserted = mysqli_query($this->db_connection,$insertQuery);
         
                 if($query_inserted){
                     move_uploaded_file($image['tmp_name'],$imageName);
@@ -75,7 +76,7 @@ class Slider {
                     $updateQuery  =   "UPDATE slider_items SET title = '$title', description = '$desc', image = '$imageName' WHERE slider_items.id = $id";
                 }
         
-                $query_updated = mysqli_query($this->db->dbConnect(),$updateQuery);
+                $query_updated = mysqli_query($this->db_connection,$updateQuery);
                 
                 if($query_updated){
                     move_uploaded_file($image['tmp_name'],$imageName);
@@ -89,9 +90,9 @@ class Slider {
     
     public function deleteSliderItem($id) {
         $deleteQuery = "DELETE FROM slider_items WHERE id = $id";
-        $item =  mysqli_fetch_assoc($this->selectItem($id));
+        $item =  mysqli_fetch_assoc($this->selectItemById($id));
         $deleteImage = $item['image'];
-        $deleted = mysqli_query($this->db->dbConnect(),$deleteQuery);
+        $deleted = mysqli_query($this->db_connection,$deleteQuery);
         if($deleted){
             unlink($deleteImage);
             echo "<script>alert('Item deleted');</script>";
